@@ -20,12 +20,12 @@ const textComponentProp: ComponentProp<TextComponentOption> = {
     inputMode: 'single',
     // 表单输入项绑定字段
     field: '',
-    key: '',
+    uniqueKey: '',
     placeholder: '请输入内容',
   },
 }
 export {
   TextPropPanel,
-  TextComponentOption,
+  type TextComponentOption,
   textComponentProp,
 }

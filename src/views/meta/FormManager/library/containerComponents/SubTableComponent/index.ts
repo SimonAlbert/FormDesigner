@@ -19,7 +19,7 @@ const subTableComponentProp: ComponentProp<SubTableComponentOption> = {
   option: {
     // 表单输入项label
     label: 'SubTable子表',
-    key: '',
+    uniqueKey: '',
     formId: '',
     relationFieldId: '',
   },
@@ -27,6 +27,6 @@ const subTableComponentProp: ComponentProp<SubTableComponentOption> = {
 export {
   SubTableInput,
   SubTablePropPanel,
-  SubTableComponentOption,
+  type SubTableComponentOption,
   subTableComponentProp,
 }

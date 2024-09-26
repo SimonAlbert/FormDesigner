@@ -6,7 +6,7 @@ import type { ComponentOption, ComponentProp } from '@/views/meta/FormManager/li
 import { injectCreateField, injectCurrentComponent } from '@/views/meta/FormManager/common/useInjection'
 import { useGroup } from '@/views/meta/FormManager/common/draggable/useGroup'
 import { DeleteOutlined } from '@ant-design/icons-vue'
-import { inputComponentMap } from '@/views/meta/FormManager/library/register'
+import { readonlyComponentMap } from '@/views/meta/FormManager/library/register'
 
 
 interface Props {
@@ -21,16 +21,20 @@ function handleAdded(dragEvent: any) {
   if (dragEvent.added){
     const prop = <ComponentProp<ComponentOption>>(dragEvent.added.element)
     createComponent(prop)
+    // setCurrentComponent(prop)
+    currentComponent.value = prop
   }
 }
 
-function handleClick(element: ComponentProp<ComponentOption>) {
-  setCurrentComponent(element)
+function handleClick(prop: ComponentProp<ComponentOption>) {
+  setCurrentComponent(prop)
+  // currentComponent.value = prop
 }
 // 点击删除
 function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index: number) {
-  if (currentComponent.value.option.key === schemaArray[index].option.key)
-    setCurrentComponent(undefined)
+  if (currentComponent.value?.option.uniqueKey === schemaArray[index].option.uniqueKey)
+    // setCurrentComponent(undefined)
+    currentComponent.value = undefined
   schemaArray.splice(index, 1)
 }
 
@@ -45,19 +49,29 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
     @change="handleAdded"
   >
     <transition-group>
-      <div v-for="(element,index) in props.schemaArray" :key="element.option.key"
-           @click="handleClick(element)"
+      <div v-for="(element,index) in props.schemaArray" :key="element.option.uniqueKey"
+           @click.stop="handleClick(element)"
            class="designer-item"
-           :class="currentComponent && element.option.key === currentComponent.option?.key ? 'selected-border' : 'border'"
+           :class="currentComponent && element.option.uniqueKey === currentComponent.option?.uniqueKey ? 'selected-border' : 'border'"
       >
-        <a-form-item :label="element.option.label">
-          <component
-            :is="inputComponentMap[element.componentType]"
-            v-bind="{ ...element.option }"
-          />
-        </a-form-item>
+          <template v-if="element.componentLogicType === 'input'">
+            <a-form-item :label="element.option.label">
+              <!-- 输入组件 -->
+              <a-input></a-input>
+            </a-form-item>
+          </template>
+          <template v-else-if="element.componentLogicType === 'layout'">
+            <!-- 布局组件 -->
+            <component
+              :is="readonlyComponentMap[element.componentType]"
+              v-bind="{ ...element.option }"
+            />
+          </template>
+          <template v-else-if="element.componentLogicType === 'container'">
+
+          </template>
         <div
-          v-if="currentComponent && element.option.key === currentComponent.option?.key"
+          v-if="currentComponent && element.option.uniqueKey === currentComponent.option?.uniqueKey"
           class="tool-bar"
           @click.stop="handleDelete(props.schemaArray, index)"
         >
@@ -85,10 +99,5 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
   top: 0;
   right: 0;
   z-index: 999;
-}
-.grid-item {
-  height: 100%;
-  min-height: 50px;
-  border: 1px dashed lightskyblue;
 }
 </style>

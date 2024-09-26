@@ -15,19 +15,19 @@ const modalComponentProp: ComponentProp<ModalComponentOption> = {
   componentType: 'Modal',
   // 组件选项options,决定怎样渲染
   option: {
-    defaultType: 'REFERENCE',
+    defaultType: 'VARCHAR',
     // 表单输入项label
     label: 'Modal弹窗',
     inputMode: 'single',
     // 表单输入项绑定字段
     field: '',
-    key: '',
+    uniqueKey: '',
   },
 }
 
 export {
   ModalInput,
   ModalPropPanel,
-  ModalComponentOption,
+  type ModalComponentOption,
   modalComponentProp,
 }

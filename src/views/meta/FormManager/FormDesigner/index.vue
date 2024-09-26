@@ -13,54 +13,29 @@
 import { provide, ref } from 'vue'
 import { VueDraggableNext }from 'vue-draggable-next'
 import { cloneDeep } from 'lodash-es'
-import { onBeforeRouteLeave } from 'vue-router'
-import DesignerItem from '@/views/meta/FormManager/FormDesigner/components/DesignerItem.vue'
-import { componentLibrary, propPanelMap } from '@/views/meta/FormManager/library/register'
+import { componentPropLibrary, propPanelMap } from '@/views/meta/FormManager/library/register'
 import { asSingle } from '@/views/meta/FormManager/library/util'
-import SingleBasePropPanel
-  from '@/views/meta/FormManager/library/inputComponents/SingleBasePropPanel.vue'
+import SingleBasePropPanel from '@/views/meta/FormManager/library/inputComponents/SingleBasePropPanel.vue'
 import { useFormDesigner } from '@/views/meta/FormManager/FormDesigner/useFormDesigner'
-import type {ComponentOption, ComponentProp} from "@/views/meta/FormManager/library/model";
+import DesignerArray from '@/views/meta/FormManager/FormDesigner/components/DesignerArray.vue'
 
 const {
   libraryGroup,
-  formGroup,
   currentComponent,
-  setCurrentComponent,
   view,
   metadata,
-  fieldSource,
   updateCurrentField,
   createComponent,
 } = useFormDesigner()
 
-function addComponent(dragEvent) {
-  if (dragEvent.added){
-    const prop = <ComponentProp<ComponentOption>>(dragEvent.added.element)
-    const option = prop.option
-    console.log(dragEvent)
-    createComponent(dragEvent.added.element)
-  }
-}
 
-provide('setCurrentComponent', setCurrentComponent)
+// provide('setCurrentComponent', setCurrentComponent)
 provide('currentComponent', currentComponent)
 provide('metadata', metadata)
 provide('updateCurrentField', updateCurrentField)
 provide('createComponent', createComponent)
 
 const activeKey = ref('1')
-
-// onBeforeRouteLeave((leave) => {
-  // console.log(leave)
-  // if (window.confirm('是否保存视图和元数据?')) {
-  //   saveFormStructure()
-  // }
-  // else {
-  //   rollbackMetadata()
-  // }
-  // return true
-// })
 
 </script>
 
@@ -93,13 +68,13 @@ const activeKey = ref('1')
           <a-tab-pane key="1" tab="组件库">
             <VueDraggableNext
               :group="libraryGroup"
-              :list="componentLibrary"
+              :list="componentPropLibrary"
               :clone="cloneDeep"
               :sort="false"
               item-key="typeName"
             >
               <transition-group>
-                <div v-for="element in componentLibrary" :key="element.componentType">
+                <div v-for="element in componentPropLibrary" :key="element.componentType">
                   <div class="library-item border">
                     {{ element.typeName }}
                   </div>
@@ -108,50 +83,32 @@ const activeKey = ref('1')
             </VueDraggableNext>
           </a-tab-pane>
           <a-tab-pane key="2" tab="数据源" force-render>
-            <VueDraggableNext
-              :group="{
-                name: 'fieldSource',
-                pull: 'clone',
-                put: false,
-              }"
-              :list="fieldSource"
-              :clone="cloneDeep"
-              :sort="false"
-              item-key="typeName"
-            >
-              <transition-group>
-                <div v-for="element in fieldSource" :key="element.option.field">
-                  <div class="library-item border">
-                    {{ element.option.label }}
-                  </div>
-                </div>
-              </transition-group>
-            </VueDraggableNext>
+<!--            <VueDraggableNext-->
+<!--              :group="{-->
+<!--                name: 'fieldSource',-->
+<!--                pull: 'clone',-->
+<!--                put: false,-->
+<!--              }"-->
+<!--              :list="fieldSource"-->
+<!--              :clone="cloneDeep"-->
+<!--              :sort="false"-->
+<!--              item-key="typeName"-->
+<!--            >-->
+<!--              <transition-group>-->
+<!--                <div v-for="element in fieldSource" :key="element.option.field">-->
+<!--                  <div class="library-item border">-->
+<!--                    {{ element.option.label }}-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </transition-group>-->
+<!--            </VueDraggableNext>-->
           </a-tab-pane>
         </a-tabs>
       </a-col>
       <!-- 2.FormPanel表单主面板,可拖入 -->
       <a-col :span="16" class="border">
         <a-form :layout="'vertical'">
-          <VueDraggableNext
-            class="drag-container"
-            :list="view.viewContent"
-            :group="formGroup"
-            animation="300"
-            item-key="option.key"
-            @change="addComponent"
-          >
-            <transition-group>
-              <div v-for="(element,index) in view.viewContent" :key="element.option.key">
-                <DesignerItem
-                  :parent="view.viewContent"
-                  :component-index="index"
-                  :schema="element"
-                  :group="formGroup"
-                />
-              </div>
-            </transition-group>
-          </VueDraggableNext>
+          <DesignerArray :schema-array="view.viewContent" />
         </a-form>
       </a-col>
       <!-- 3.ComponentPropsPanel组件配置面板,根据组件动态渲染 -->
@@ -173,6 +130,7 @@ const activeKey = ref('1')
           <template v-else-if="currentComponent.componentLogicType === 'layout'">
             <component
               :is="propPanelMap[currentComponent.componentType]"
+              v-bind="{...currentComponent}"
             />
           </template>
         </template>
@@ -209,6 +167,7 @@ const activeKey = ref('1')
 .drag-container {
   height: 100%;
   min-height: 50px;
+  margin: 10px;
   border-bottom: 1px dashed lightskyblue;
 }
 

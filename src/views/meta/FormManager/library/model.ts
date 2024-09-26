@@ -23,7 +23,7 @@ interface ComponentOption {
   // 组件标签
   label: string
   // 唯一标志
-  key: string
+  uniqueKey: string
 }
 // 子表等容器
 interface ContainerComponentOption extends ComponentOption {
@@ -46,7 +46,7 @@ interface LayoutComponentOption extends ComponentOption {
 }
 // ComponentProp: 决定渲染什么, 所有组件都有的不可编辑属性, 直接挂到组件上
 interface ComponentProp<T extends ComponentOption> {
-  // 组件类型
+  // 控件名
   typeName: string
   componentLogicType: 'input' | 'layout' | 'container'
   // 渲染组件
@@ -54,6 +54,8 @@ interface ComponentProp<T extends ComponentOption> {
   // 组件选项options,决定怎样渲染
   option: T
 }
+
+// Prop是不可变属性, Option是可变属性
 
 // 填写表单后产出的数据
 interface FormArtifact {
@@ -98,19 +100,19 @@ interface View {
   fieldContent: { [key: string]: FieldInfo }
 }
 export {
-  InputComponentType,
-  ComponentType,
-  ComponentOption,
-  ContainerComponentOption,
-  InputComponentOption,
-  SingleComponentOption,
-  MultiComponentOption,
-  LayoutComponentOption,
-  ComponentProp,
-  ComponentMap,
-  FormArtifact,
-  FieldInfo,
-  Metadata,
-  View,
-  FieldType,
+  type InputComponentType,
+  type ComponentType,
+  type ComponentOption,
+  type ContainerComponentOption,
+  type InputComponentOption,
+  type SingleComponentOption,
+  type MultiComponentOption,
+  type LayoutComponentOption,
+  type ComponentProp,
+  type ComponentMap,
+  type FormArtifact,
+  type FieldInfo,
+  type Metadata,
+  type View,
+  type FieldType,
 }

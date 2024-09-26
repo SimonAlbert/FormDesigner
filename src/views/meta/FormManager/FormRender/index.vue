@@ -41,7 +41,7 @@ provide('metadata', metadata)
     <a-row>
       <a-col :span="16" :offset="4" class="border">
         <a-form v-if="metadata.loaded">
-          <template v-for="(element) in view.viewContent" :key="element.option.key">
+          <template v-for="(element) in view.viewContent" :key="element.option.uniqueKey">
             <RenderItem
               :schema="element"
               :form-artifact="formArtifact"

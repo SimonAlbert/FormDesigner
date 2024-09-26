@@ -1,9 +1,11 @@
 import type { ComponentOption, ComponentProp, LayoutComponentOption } from '../../model'
 import GridPropPanel from './GridPropPanel.vue'
+import GridLayout from './GridLayout.vue'
 
 interface GridComponentOption extends LayoutComponentOption {
-  children: ComponentProp<ComponentOption>[][]
-  size: number // 每行个数
+  children: Array<Array<Array<ComponentProp<ComponentOption>>>>
+  column: number // 每行个数
+  row: number // 每列个数
 }
 
 const gridComponentProp: ComponentProp<GridComponentOption> = {
@@ -16,18 +18,19 @@ const gridComponentProp: ComponentProp<GridComponentOption> = {
   option: {
     // 表单输入项label
     label: '',
-    key: '',
-    size: 3,
+    uniqueKey: '',
+    // 列
+    column: 3,
+    row: 1,
     children: [
-      [],
-      [],
-      [],
-    ],
+      [[], [], []]
+    ]
   },
 }
 
 export {
   GridPropPanel,
-  GridComponentOption,
+  GridLayout,
+  type GridComponentOption,
   gridComponentProp,
 }

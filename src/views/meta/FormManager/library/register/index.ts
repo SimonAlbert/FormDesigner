@@ -1,6 +1,6 @@
-import { componentLibrary } from '@/views/meta/FormManager/library/register/RegisterComponentLibrary'
-import { inputComponentMap } from '@/views/meta/FormManager/library/register/RegisterInputComponent'
-import { propPanelMap } from '@/views/meta/FormManager/library/register/RegisterPropPanel'
-import { readComponentMap } from '@/views/meta/FormManager/library/register/RegisterReadComponent'
+import { componentPropLibrary } from '@/views/meta/FormManager/library/register/ComponentPropRegister'
+import { componentMap } from '@/views/meta/FormManager/library/register/ComponentRegister'
+import { propPanelMap } from '@/views/meta/FormManager/library/register/ComponentPropPanelRegister'
+import { readonlyComponentMap } from '@/views/meta/FormManager/library/register/ComponentReadonlyRegister'
 
-export { componentLibrary, inputComponentMap, propPanelMap, readComponentMap }
+export { componentPropLibrary, componentMap, propPanelMap, readonlyComponentMap }

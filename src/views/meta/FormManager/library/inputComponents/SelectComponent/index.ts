@@ -1,6 +1,7 @@
+import type { ComponentProp, SingleComponentOption } from '@/views/meta/FormManager/library/model'
+
 import SelectPropPanel
   from './SelectPropPanel.vue'
-import type { ComponentProp, SingleComponentOption } from '@/views/meta/FormManager/library/model'
 
 interface SelectComponentOption extends SingleComponentOption {
   options: Array<{ value: any; label: string; disabled: boolean; key: string; title: string }>
@@ -21,7 +22,7 @@ const selectComponentProp: ComponentProp<SelectComponentOption> = {
     inputMode: 'single',
     // 表单输入项绑定字段
     field: '',
-    key: '',
+    uniqueKey: '',
     options: [],
     mode: '',
   },
@@ -29,6 +30,6 @@ const selectComponentProp: ComponentProp<SelectComponentOption> = {
 
 export {
   SelectPropPanel,
-  SelectComponentOption,
+ type SelectComponentOption,
   selectComponentProp,
 }

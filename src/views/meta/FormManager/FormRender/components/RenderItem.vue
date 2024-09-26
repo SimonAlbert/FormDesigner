@@ -8,7 +8,7 @@ import type {
   ComponentProp,
   FormArtifact,
 } from '@/views/meta/FormManager/library/model'
-import { inputComponentMap, readComponentMap } from '@/views/meta/FormManager/library/register'
+import { componentMap, readonlyComponentMap } from '@/views/meta/FormManager/library/register'
 import type { GridComponentOption } from '@/views/meta/FormManager/library/layoutComponents/GridComponent'
 import { asInput, asSingle } from '@/views/meta/FormManager/library/util'
 import { injectFormArtifact } from '@/views/meta/FormManager/common/useInjection'
@@ -66,7 +66,7 @@ function toGrid() {
         <a-row v-for="(x, i) in Math.floor(toGrid().children.length / toGrid().size + 0.5)" :key="x">
           <!--  y列  -->
           <a-col v-for="(y, j) in toGrid().size" :key="y" :span="Math.floor(24 / toGrid().size)">
-            <template v-for="(element) in toGrid().children[i * toGrid().size + j]" :key="element.option.key">
+            <template v-for="(element) in toGrid().children[i * toGrid().size + j]" :key="element.option.uniqueKey">
               <RenderItem
                 :schema="element"
                 :form-artifact="props.formArtifact"
@@ -83,7 +83,7 @@ function toGrid() {
       <!-- 二.容器组件渲染 -->
       <template v-if="schema.componentType === 'SubTable'">
         <component
-          :is="inputComponentMap[schema.componentType]"
+          :is="componentMap[schema.componentType]"
           v-bind="{ ...props.schema?.option }"
           :form-artifact="props.formArtifact"
         />
@@ -97,7 +97,7 @@ function toGrid() {
           <!-- 目前显示和输入超分开是为了充分利用ant-design-vue已有的Select等输入组件,减少工作量 -->
           <template v-if="props.editing">
             <component
-              :is="inputComponentMap[schema.componentType]"
+              :is="componentMap[schema.componentType]"
               v-bind="{ ...props.schema?.option }"
               :value="valueItem.value"
               :display-value="valueItem.displayValue"
@@ -106,7 +106,7 @@ function toGrid() {
           </template>
           <template v-else>
             <component
-              :is="readComponentMap[schema.componentType]"
+              :is="readonlyComponentMap[schema.componentType]"
               :option="props.schema?.option"
               :value="valueItem.value"
               :display-value="valueItem.displayValue"

@@ -9,7 +9,7 @@ import { SubTableInput }
 import type { ComponentMap } from '@/views/meta/FormManager/library/model'
 import { GridLayout } from '@/views/meta/FormManager/library/layoutComponents/GridComponent'
 
-export const inputComponentMap: ComponentMap = {
+export const componentMap: ComponentMap = {
   Input,
   Select,
   Modal: ModalInput,

@@ -17,7 +17,7 @@ import {
   subTableComponentProp,
 } from '@/views/meta/FormManager/library/containerComponents/SubTableComponent'
 
-export const componentLibrary: ComponentProp<ComponentOption>[] = [
+export const componentPropLibrary: ComponentProp<ComponentOption>[] = [
   textComponentProp,
   selectComponentProp,
   modalComponentProp,
