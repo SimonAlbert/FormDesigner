@@ -25,7 +25,7 @@ export const componentLibrary: ComponentProp<ComponentOption>[] = [
   subTableComponentProp,
 ]
 
-export const componentPropMap: { [key in InputComponentType]: ComponentProp<SingleComponentOption> } = {
+export const inputComponentPropMap: { [key in InputComponentType]: ComponentProp<SingleComponentOption> } = {
   Input: textComponentProp,
   Select: selectComponentProp,
   Modal: modalComponentProp,
