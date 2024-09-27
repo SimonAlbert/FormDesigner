@@ -17,7 +17,6 @@ function childAt(i: number, j: number) {
       <Col v-for="(j, y) in option.column" :key="j" :span="Math.floor(24 / option.column)">
         <div class="grid-item">
           <DesignerArray :schema-array="childAt(x, y)" />
-          {{ `${x},${y}` }}
         </div>
       </Col>
     </Row>
