@@ -1,8 +1,6 @@
 import type {
-  ComponentOption,
   ComponentProp,
   FieldInfo,
-  InputComponentOption,
   SingleComponentOption,
 } from './model'
 
@@ -19,15 +17,7 @@ function prop2field(prop: ComponentProp<SingleComponentOption>) {
   }
   return field
 }
-// 下面是一些常用的类型转换方法
-function asInput(option: ComponentOption | undefined): InputComponentOption {
-  return option as InputComponentOption
-}
-function asSingle(option: ComponentOption | undefined): SingleComponentOption {
-  return option as SingleComponentOption
-}
+
 export {
-  asInput,
-  asSingle,
   prop2field,
 }

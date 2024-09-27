@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { GridComponentOption } from '@/views/meta/FormManager/library/layoutComponents/GridComponent/index'
+import type { GridComponentOption } from '@/views/meta/FormManager/common/ComponentLibrary/layout/GridComponent'
 import DesignerArray from '@/views/meta/FormManager/FormDesigner/components/DesignerArray.vue'
 import { Col, Row } from 'ant-design-vue'
 
@@ -17,6 +17,7 @@ function childAt(i: number, j: number) {
       <Col v-for="(j, y) in option.column" :key="j" :span="Math.floor(24 / option.column)">
         <div class="grid-item">
           <DesignerArray :schema-array="childAt(x, y)" />
+          {{ `${x},${y}` }}
         </div>
       </Col>
     </Row>

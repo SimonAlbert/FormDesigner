@@ -2,12 +2,10 @@
 type InputComponentType =
   | 'Input'
   | 'Select'
-  | 'Modal'
 // 组件类型
 type ComponentType =
   InputComponentType
   | 'Grid'
-  | 'SubTable'
 // 字段类型
 type FieldType = 'VARCHAR' | 'BIGINT'
 
@@ -34,7 +32,7 @@ interface InputComponentOption extends ComponentOption {
 }
 // 1组件-1字段, 一对一型输入组件
 interface SingleComponentOption extends InputComponentOption {
-  // 表单输入项绑定字段 TODO 字段应该对应数据源内的字段对象，这样可以在PropPanel内直接更新数据源字段
+  // 表单输入项绑定字段 TODO 字段应该对应数据源内的字段对象, 这样可以在PropPanel内直接更新数据源字段
   field: string
   defaultType: FieldType
 }
@@ -83,21 +81,20 @@ interface FormInfo {
   id?: number
   code?: string
   name?: string
+  maxFieldKey: number
   description?: string
   materialized?: boolean
 }
 interface Metadata {
   loaded: boolean
   form: FormInfo
-  fieldList: Array<FieldInfo>
   fieldMap: { [key: string]: FieldInfo }
   subTableMap?: { [key: string]: Metadata }
 }
 interface View {
-  formId: number
-  maxKey: number
+  maxComponentKey: number
   viewContent: Array<ComponentProp<ComponentOption>>
-  fieldContent: { [key: string]: FieldInfo }
+  metadata: Metadata
 }
 export {
   type InputComponentType,

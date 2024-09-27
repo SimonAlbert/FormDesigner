@@ -7,10 +7,10 @@ import type {
   ComponentOption,
   ComponentProp,
   FormArtifact,
-} from '@/views/meta/FormManager/library/model'
-import { componentMap, readonlyComponentMap } from '@/views/meta/FormManager/library/register'
-import type { GridComponentOption } from '@/views/meta/FormManager/library/layoutComponents/GridComponent'
-import { asInput, asSingle } from '@/views/meta/FormManager/library/util'
+} from '@/views/meta/FormManager/common/ComponentLibrary/model'
+import { componentMap, readonlyComponentMap } from '@/views/meta/FormManager/common/ComponentLibrary/register'
+import type { GridComponentOption } from '@/views/meta/FormManager/common/ComponentLibrary/layoutComponents/GridComponent'
+import { asInput, asSingle } from '@/views/meta/FormManager/common/ComponentLibrary/util'
 import { injectFormArtifact } from '@/views/meta/FormManager/common/useInjection'
 
 interface Props {

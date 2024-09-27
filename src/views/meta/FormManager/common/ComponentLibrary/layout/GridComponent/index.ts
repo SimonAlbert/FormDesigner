@@ -1,4 +1,4 @@
-import type { ComponentOption, ComponentProp, LayoutComponentOption } from '../../model'
+import type { ComponentOption, ComponentProp, LayoutComponentOption } from '@/views/meta/FormManager/common/ComponentLibrary/model'
 import GridPropPanel from './GridPropPanel.vue'
 import GridLayout from './GridLayout.vue'
 

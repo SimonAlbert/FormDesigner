@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import type {
-  InputComponentOption,
-} from '@/views/meta/FormManager/library/model'
+import type { InputComponentOption } from '@/views/meta/FormManager/common/ComponentLibrary/model'
 
 interface Props {
   option: InputComponentOption

@@ -1,7 +1,5 @@
-import type { ComponentProp, SingleComponentOption } from '@/views/meta/FormManager/library/model'
-
-import SelectPropPanel
-  from './SelectPropPanel.vue'
+import type { ComponentProp, SingleComponentOption } from '@/views/meta/FormManager/common/ComponentLibrary/model'
+import SelectPropPanel from './SelectPropPanel.vue'
 
 interface SelectComponentOption extends SingleComponentOption {
   options: Array<{ value: any; label: string; disabled: boolean; key: string; title: string }>

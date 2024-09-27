@@ -1,6 +1,6 @@
 import TextPropPanel
   from './TextPropPanel.vue'
-import type { ComponentProp, SingleComponentOption } from '@/views/meta/FormManager/library/model'
+import type { ComponentProp, SingleComponentOption } from '@/views/meta/FormManager/common/ComponentLibrary/model'
 
 interface TextComponentOption extends SingleComponentOption {
   placeholder: string

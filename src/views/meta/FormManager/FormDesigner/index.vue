@@ -10,30 +10,24 @@
  * 请求到JSON，交给渲染器渲染出表单
  * 4.表单数据录入并持久化
  */
-import { provide, ref } from 'vue'
-import { VueDraggableNext }from 'vue-draggable-next'
+import { ref } from 'vue'
+import { VueDraggableNext } from 'vue-draggable-next'
 import { cloneDeep } from 'lodash-es'
-import { componentPropLibrary, propPanelMap } from '@/views/meta/FormManager/library/register'
-import { asSingle } from '@/views/meta/FormManager/library/util'
-import SingleBasePropPanel from '@/views/meta/FormManager/library/inputComponents/SingleBasePropPanel.vue'
 import { useFormDesigner } from '@/views/meta/FormManager/FormDesigner/useFormDesigner'
+import SingleBasePropPanel from '@/views/meta/FormManager/common/ComponentLibrary/input/SingleBasePropPanel.vue'
 import DesignerArray from '@/views/meta/FormManager/FormDesigner/components/DesignerArray.vue'
 
 const {
-  libraryGroup,
-  currentComponent,
   view,
   metadata,
-  updateCurrentField,
-  createComponent,
+  current,
+  setCurrent,
+  libraryGroup,
+  componentPropLibrary,
+  componentMap,
+  propPanelMap,
+  readonlyComponentMap
 } = useFormDesigner()
-
-
-// provide('setCurrentComponent', setCurrentComponent)
-provide('currentComponent', currentComponent)
-provide('metadata', metadata)
-provide('updateCurrentField', updateCurrentField)
-provide('createComponent', createComponent)
 
 const activeKey = ref('1')
 
@@ -42,21 +36,19 @@ const activeKey = ref('1')
 <template>
   <div>
     <a-space>
-      <a-button @click="() => console.log(view)">
-        打印视图数据(view)
-      </a-button>
-      <a-button @click="() => console.log(metadata)">
-        打印元数据(metadata)
-      </a-button>
+      <a-button @click="() => console.log(view)"> 打印视图数据(view) </a-button>
+      <a-button @click="() => console.log(metadata)"> 打印元数据(metadata) </a-button>
       <a-button
-        @click="() => {
-          view.viewContent = []
-          setCurrentComponent(undefined)
-        }"
+        @click="
+          () => {
+            view.viewContent = []
+            setCurrent(undefined)
+          }
+        "
       >
         清除视图(view.viewContent)
       </a-button>
-      <a-button @click="() => console.log(currentComponent)">
+      <a-button @click="() => console.log(current)">
         打印当前选中的组件(currentComponent)
       </a-button>
     </a-space>
@@ -83,25 +75,25 @@ const activeKey = ref('1')
             </VueDraggableNext>
           </a-tab-pane>
           <a-tab-pane key="2" tab="数据源" force-render>
-<!--            <VueDraggableNext-->
-<!--              :group="{-->
-<!--                name: 'fieldSource',-->
-<!--                pull: 'clone',-->
-<!--                put: false,-->
-<!--              }"-->
-<!--              :list="fieldSource"-->
-<!--              :clone="cloneDeep"-->
-<!--              :sort="false"-->
-<!--              item-key="typeName"-->
-<!--            >-->
-<!--              <transition-group>-->
-<!--                <div v-for="element in fieldSource" :key="element.option.field">-->
-<!--                  <div class="library-item border">-->
-<!--                    {{ element.option.label }}-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </transition-group>-->
-<!--            </VueDraggableNext>-->
+            <!--            <VueDraggableNext-->
+            <!--              :group="{-->
+            <!--                name: 'fieldSource',-->
+            <!--                pull: 'clone',-->
+            <!--                put: false,-->
+            <!--              }"-->
+            <!--              :list="fieldSource"-->
+            <!--              :clone="cloneDeep"-->
+            <!--              :sort="false"-->
+            <!--              item-key="typeName"-->
+            <!--            >-->
+            <!--              <transition-group>-->
+            <!--                <div v-for="element in fieldSource" :key="element.option.field">-->
+            <!--                  <div class="library-item border">-->
+            <!--                    {{ element.option.label }}-->
+            <!--                  </div>-->
+            <!--                </div>-->
+            <!--              </transition-group>-->
+            <!--            </VueDraggableNext>-->
           </a-tab-pane>
         </a-tabs>
       </a-col>
@@ -113,31 +105,27 @@ const activeKey = ref('1')
       </a-col>
       <!-- 3.ComponentPropsPanel组件配置面板,根据组件动态渲染 -->
       <a-col :span="4" class="props-panel border">
-        <template v-if="currentComponent">
-          <template v-if="currentComponent.componentLogicType === 'input'">
-            <template v-if="asSingle(currentComponent.option).inputMode === 'single' && asSingle(currentComponent.option).field">
+        <template v-if="current">
+          <template v-if="current.componentLogicType === 'input'">
+            <template
+              v-if="
+                current.option.inputMode === 'single' && current.option.field
+              "
+            >
               <SingleBasePropPanel />
-              <component
-                :is="propPanelMap[currentComponent.componentType]"
-              />
+              <component :is="propPanelMap[current.componentType]" />
             </template>
           </template>
-          <template v-else-if="currentComponent.componentLogicType === 'container'">
-            <component
-              :is="propPanelMap[currentComponent.componentType]"
-            />
+          <template v-else-if="current.componentLogicType === 'container'">
+            <component :is="propPanelMap[current.componentType]" />
           </template>
-          <template v-else-if="currentComponent.componentLogicType === 'layout'">
-            <component
-              :is="propPanelMap[currentComponent.componentType]"
-              v-bind="{...currentComponent}"
-            />
+          <template v-else-if="current.componentLogicType === 'layout'">
+            <component :is="propPanelMap[current.componentType]" />
           </template>
         </template>
       </a-col>
     </a-row>
   </div>
-
 </template>
 
 <style scoped lang="less">
@@ -156,19 +144,7 @@ const activeKey = ref('1')
   border: 1px solid deepskyblue;
 }
 
-.selectedBorder {
-  border: 1px solid #ed082b;
-}
-
 .props-panel {
   padding: 10px;
 }
-
-.drag-container {
-  height: 100%;
-  min-height: 50px;
-  margin: 10px;
-  border-bottom: 1px dashed lightskyblue;
-}
-
 </style>
