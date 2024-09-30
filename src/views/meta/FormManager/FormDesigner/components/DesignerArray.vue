@@ -51,7 +51,7 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
   ghostClass: 目标位置占位样式
   -->
   <VueDraggableNext
-    class="drag-container shadow-border"
+    :class="'drag-container ' + (props.single && 'shadow-border')"
     :list="props.schemaArray"
     :group="{
       ...formGroup,
@@ -67,7 +67,7 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
       :class="
           current && element.option.uniqueKey === current.option?.uniqueKey
             ? 'designer-item selected-border'
-            : 'designer-item border'
+            : 'designer-item' + (!props.single && 'border')
         "
     >
       <template v-if="element.componentLogicType === 'input'">
@@ -120,7 +120,7 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
   //background: lightgray;
 }
 .shadow-border {
-  border: 1px dotted deepskyblue;
+  border: 1px dashed deepskyblue;
   //background: lightgray;
 }
 .selected-border {

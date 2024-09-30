@@ -12,7 +12,7 @@ const colNum = ref([3, 4, 6])
 const rowNum = ref([1, 2, 3, 4])
 
 function handleColChange(newCol: number) {
-  let num = newCol - currentComponent.value.option.row
+  let num = newCol - currentComponent.value.option.column
   let abs = Math.abs(num)
   let children = currentComponent.value.option.children
   if (num > 0) {
