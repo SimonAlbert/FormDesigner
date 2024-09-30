@@ -34,98 +34,96 @@ const activeKey = ref('1')
 </script>
 
 <template>
-  <div>
-    <a-space>
-      <a-button @click="() => console.log(view)"> 打印视图数据(view) </a-button>
-      <a-button @click="() => console.log(metadata)"> 打印元数据(metadata) </a-button>
-      <a-button
-        @click="
-          () => {
-            view.viewContent = []
-            setCurrent(undefined)
-          }
-        "
-      >
-        清除视图(view.viewContent)
-      </a-button>
-      <a-button @click="() => console.log(current)">
-        打印当前选中的组件(currentComponent)
-      </a-button>
-    </a-space>
+  <a-row style="height: 5%">
+    <a-button @click="() => console.log(view)"> 打印视图数据(view) </a-button>
+    <a-button @click="() => console.log(metadata)"> 打印元数据(metadata) </a-button>
+    <a-button
+      @click="
+      () => {
+        view.viewContent = []
+        setCurrent(undefined)
+      }
+    "
+    >
+      清除视图(view.viewContent)
+    </a-button>
+    <a-button @click="() => console.log(current)">
+      打印当前选中的组件(currentComponent)
+    </a-button>
+  </a-row>
 
-    <a-row>
-      <!-- 1.ComponentsContainer组件库,可拖出 -->
-      <a-col :span="4" class="library-panel border">
-        <a-tabs v-model:activeKey="activeKey">
-          <a-tab-pane key="1" tab="组件库">
-            <VueDraggableNext
-              :group="libraryGroup"
-              :list="componentPropLibrary"
-              :clone="cloneDeep"
-              :sort="false"
-              item-key="typeName"
-            >
-              <transition-group>
-                <div v-for="element in componentPropLibrary" :key="element.componentType">
-                  <div class="library-item border">
-                    {{ element.typeName }}
-                  </div>
+  <a-row style="height: 95%">
+    <!-- 1.ComponentsContainer组件库,可拖出 -->
+    <a-col :span="4" class="library-panel border">
+      <a-tabs v-model:activeKey="activeKey">
+        <a-tab-pane key="1" tab="组件库">
+          <VueDraggableNext
+            :group="libraryGroup"
+            :list="componentPropLibrary"
+            :clone="cloneDeep"
+            :sort="false"
+            item-key="typeName"
+          >
+            <transition-group>
+              <div v-for="element in componentPropLibrary" :key="element.componentType">
+                <div class="library-item border">
+                  {{ element.typeName }}
                 </div>
-              </transition-group>
-            </VueDraggableNext>
-          </a-tab-pane>
-          <a-tab-pane key="2" tab="数据源" force-render>
-            <!--            <VueDraggableNext-->
-            <!--              :group="{-->
-            <!--                name: 'fieldSource',-->
-            <!--                pull: 'clone',-->
-            <!--                put: false,-->
-            <!--              }"-->
-            <!--              :list="fieldSource"-->
-            <!--              :clone="cloneDeep"-->
-            <!--              :sort="false"-->
-            <!--              item-key="typeName"-->
-            <!--            >-->
-            <!--              <transition-group>-->
-            <!--                <div v-for="element in fieldSource" :key="element.option.field">-->
-            <!--                  <div class="library-item border">-->
-            <!--                    {{ element.option.label }}-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </transition-group>-->
-            <!--            </VueDraggableNext>-->
-          </a-tab-pane>
-        </a-tabs>
-      </a-col>
-      <!-- 2.FormPanel表单主面板,可拖入 -->
-      <a-col :span="16" class="border">
-        <a-form :layout="'vertical'">
-          <DesignerArray :schema-array="view.viewContent" />
-        </a-form>
-      </a-col>
-      <!-- 3.ComponentPropsPanel组件配置面板,根据组件动态渲染 -->
-      <a-col :span="4" class="props-panel border">
-        <template v-if="current">
-          <template v-if="current.componentLogicType === 'input'">
-            <template
-              v-if="
-                current.option.inputMode === 'single' && current.option.field
-              "
-            >
-              <SingleBasePropPanel />
-              <component :is="propPanelMap[current.componentType]" />
-            </template>
-          </template>
-          <template v-else-if="current.componentLogicType === 'container'">
-            <component :is="propPanelMap[current.componentType]" />
-          </template>
-          <template v-else-if="current.componentLogicType === 'layout'">
+              </div>
+            </transition-group>
+          </VueDraggableNext>
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="数据源" force-render>
+          <!--            <VueDraggableNext-->
+          <!--              :group="{-->
+          <!--                name: 'fieldSource',-->
+          <!--                pull: 'clone',-->
+          <!--                put: false,-->
+          <!--              }"-->
+          <!--              :list="fieldSource"-->
+          <!--              :clone="cloneDeep"-->
+          <!--              :sort="false"-->
+          <!--              item-key="typeName"-->
+          <!--            >-->
+          <!--              <transition-group>-->
+          <!--                <div v-for="element in fieldSource" :key="element.option.field">-->
+          <!--                  <div class="library-item border">-->
+          <!--                    {{ element.option.label }}-->
+          <!--                  </div>-->
+          <!--                </div>-->
+          <!--              </transition-group>-->
+          <!--            </VueDraggableNext>-->
+        </a-tab-pane>
+      </a-tabs>
+    </a-col>
+    <!-- 2.FormPanel表单主面板,可拖入 -->
+    <a-col :span="16" class="border">
+      <a-form :layout="'vertical'" style="height: 100%">
+        <DesignerArray :schema-array="view.viewContent" :single="false" />
+      </a-form>
+    </a-col>
+    <!-- 3.ComponentPropsPanel组件配置面板,根据组件动态渲染 -->
+    <a-col :span="4" class="props-panel border">
+      <template v-if="current">
+        <template v-if="current.componentLogicType === 'input'">
+          <template
+            v-if="
+              current.option.inputMode === 'single' && current.option.field
+            "
+          >
+            <SingleBasePropPanel />
             <component :is="propPanelMap[current.componentType]" />
           </template>
         </template>
-      </a-col>
-    </a-row>
-  </div>
+        <template v-else-if="current.componentLogicType === 'container'">
+          <component :is="propPanelMap[current.componentType]" />
+        </template>
+        <template v-else-if="current.componentLogicType === 'layout'">
+          <component :is="propPanelMap[current.componentType]" />
+        </template>
+      </template>
+    </a-col>
+  </a-row>
 </template>
 
 <style scoped lang="less">

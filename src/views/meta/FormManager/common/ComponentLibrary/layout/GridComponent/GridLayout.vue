@@ -10,25 +10,21 @@ function childAt(i: number, j: number) {
 </script>
 
 <template>
-  <div>
-    <!--  x行  -->
-    <Row v-for="(i, x) in option.row" :key="i">
-      <!--  y列  -->
-      <Col v-for="(j, y) in option.column" :key="j" :span="Math.floor(24 / option.column)">
-        <div class="grid-item">
-          <DesignerArray :schema-array="childAt(x, y)" />
-        </div>
-      </Col>
-    </Row>
-  </div>
-
+  <!--  x行  -->
+  <Row v-for="(i, x) in option.row" :key="i">
+    <!--  y列  -->
+    <Col v-for="(j, y) in option.column" :key="j" :span="Math.floor(24 / option.column)">
+      <div class="grid-item">
+        <DesignerArray :schema-array="childAt(x, y)" :single="true"/>
+      </div>
+    </Col>
+  </Row>
 </template>
 
 <style scoped lang="less">
 
 .grid-item {
   height: 100%;
-  min-height: 50px;
-  border: 1px dashed lightskyblue;
+  min-height: 100px;
 }
 </style>

@@ -9,7 +9,7 @@ let author = {
 </script>
 
 <template>
-  <a-layout-content>
+  <a-layout-content style="height: 90%">
     <FormDesigner></FormDesigner>
   </a-layout-content>
   <a-layout-footer>

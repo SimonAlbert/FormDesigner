@@ -2,16 +2,21 @@
 // 整理思路
 // 表单设计器里的组件大致分为两类: 1.布局组件 2.字段值渲染组件
 import { VueDraggableNext } from 'vue-draggable-next'
-import type { ComponentOption, ComponentProp } from '@/views/meta/FormManager/common/ComponentLibrary/model'
+import type {
+  ComponentOption,
+  ComponentProp
+} from '@/views/meta/FormManager/common/ComponentLibrary/model'
 import { useGroup } from '@/views/meta/FormManager/common/DraggableGroup/useGroup'
 import { DeleteOutlined } from '@ant-design/icons-vue'
 import { useCurrentComponent } from '@/views/meta/FormManager/common/useCurrentComponent'
 import { useComponentLibrary } from '@/views/meta/FormManager/common/ComponentLibrary/useComponentLibrary'
 
-const { current, getCurrent, setCurrent, afterComponentCreate, afterComponentUpdate } = useCurrentComponent()
+const { current, getCurrent, setCurrent, afterComponentCreate, afterComponentUpdate } =
+  useCurrentComponent()
 const { readonlyComponentMap } = useComponentLibrary()
 interface Props {
   schemaArray: Array<ComponentProp<ComponentOption>>
+  single: boolean
 }
 const props = defineProps<Props>()
 
@@ -20,7 +25,7 @@ const { formGroup } = useGroup()
 function handleAdded(dragEvent: any) {
   if (dragEvent.added) {
     const prop = <ComponentProp<ComponentOption>>dragEvent.added.element
-    if (!prop.option.uniqueKey){
+    if (!prop.option.uniqueKey) {
       afterComponentCreate(prop)
     }
     setCurrent(prop)
@@ -48,8 +53,10 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
   <VueDraggableNext
     class="drag-container shadow-border"
     :list="props.schemaArray"
-    :group="formGroup"
-    ghostClass="test-border"
+    :group="{
+      ...formGroup,
+      put: props.single? props.schemaArray.length === 0 : true
+    }"
     animation="300"
     @change="handleAdded"
   >
@@ -58,13 +65,13 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
       :key="element.option.uniqueKey"
       @click.stop="handleClick(element)"
       :class="
-        current && element.option.uniqueKey === current.option?.uniqueKey
-          ? 'designer-item selected-border'
-          : 'designer-item border'
-      "
+          current && element.option.uniqueKey === current.option?.uniqueKey
+            ? 'designer-item selected-border'
+            : 'designer-item border'
+        "
     >
       <template v-if="element.componentLogicType === 'input'">
-        <a-form-item :label="element.option.label">
+        <a-form-item :label="element.option.label" style="padding: 5px">
           <!-- 输入组件 -->
           <a-input></a-input>
         </a-form-item>
@@ -77,7 +84,7 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
         />
       </template>
       <template v-else-if="element.componentLogicType === 'container'">
-
+        <!-- 容器组件 -->
       </template>
       <div
         v-if="current && element.option.uniqueKey === current.option?.uniqueKey"
@@ -87,10 +94,6 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
         <DeleteOutlined />
       </div>
     </div>
-
-<!--    <template v-if="!props.schemaArray.length">-->
-<!--      <div class="placeholder-item"></div>-->
-<!--    </template>-->
   </VueDraggableNext>
 </template>
 
@@ -100,28 +103,33 @@ function handleDelete(schemaArray: Array<ComponentProp<ComponentOption>>, index:
   // 限制最小渲染高度, 优化拖入判定
   min-height: 50px;
   // 下方留一个隐形外框, 让拖拽容器和内部元素间有间距
-  padding-bottom: 10px;
-  padding-top: 10px;
+  //padding-bottom: 10px;
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .designer-item {
-  margin: 20px;
+  display: block;
   // 让控件内容不要紧贴着边框, 保持美观
-  padding: 10px;
+  //padding: 5px;
   position: relative;
 }
 .border {
   border: 1px solid deepskyblue;
+  //background: lightgray;
 }
 .shadow-border {
   border: 1px dotted deepskyblue;
+  //background: lightgray;
 }
 .selected-border {
   border: 1px solid #ed082b;
+  //background: lightgray;
 }
-.test-border {
+.moving-border {
   border: 1px solid #4908ed;
+  //background: lightgray;
 }
 .tool-bar {
   position: absolute;
